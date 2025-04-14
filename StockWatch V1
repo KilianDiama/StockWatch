@@ -1,0 +1,129 @@
+import yfinance as yf
+import pandas as pd
+import numpy as np
+from fastapi import FastAPI, HTTPException
+from pydantic import BaseModel
+import uvicorn
+import matplotlib.pyplot as plt
+import io, base64, datetime, os
+
+# Initialisation de l'application FastAPI
+app = FastAPI(title="StockWatch", description="Mini dashboard pour analyser des actions en temps réel", version="1.0")
+
+# Modèle de requête pour définir le ticker à analyser
+class StockRequest(BaseModel):
+    ticker: str
+
+# Fonctions de calcul d'indicateurs techniques
+def calculate_sma(series: pd.Series, window: int) -> pd.Series:
+    return series.rolling(window=window).mean()
+
+def calculate_rsi(series: pd.Series, window: int = 14) -> pd.Series:
+    delta = series.diff()
+    gain = delta.clip(lower=0)
+    loss = -delta.clip(upper=0)
+    avg_gain = gain.rolling(window=window, min_periods=window).mean()
+    avg_loss = loss.rolling(window=window, min_periods=window).mean()
+    rs = avg_gain / avg_loss
+    rsi = 100 - (100 / (1 + rs))
+    return rsi
+
+# Fonction pour récupérer les données d'un ticker avec yfinance
+def get_stock_data(ticker: str) -> pd.DataFrame:
+    stock = yf.Ticker(ticker)
+    data = stock.history(period="6mo")  # Données sur les 6 derniers mois
+    if data.empty:
+        return None
+    return data
+
+# Analyse des données financières
+def analyze_stock(data: pd.DataFrame):
+    close = data['Close']
+    sma50 = calculate_sma(close, 50)
+    sma200 = calculate_sma(close, 200)
+    rsi14 = calculate_rsi(close, 14)
+    current_price = close.iloc[-1]
+    current_rsi = rsi14.iloc[-1]
+    current_sma50 = sma50.iloc[-1]
+    current_sma200 = sma200.iloc[-1]
+    
+    # Signal simple basé sur le RSI
+    signal = "Neutral"
+    if current_rsi > 70:
+        signal = "Overbought"
+    elif current_rsi < 30:
+        signal = "Undervalued"
+        
+    analysis = {
+         "current_price": round(float(current_price), 2),
+         "rsi": round(float(current_rsi), 2),
+         "sma50": round(float(current_sma50), 2),
+         "sma200": round(float(current_sma200), 2),
+         "signal": signal
+    }
+    
+    return analysis, sma50, sma200, rsi14
+
+# Génération d'un graphique combiné Price/SMA et RSI, encodé en base64
+def generate_plot(data: pd.DataFrame, sma50: pd.Series, sma200: pd.Series, rsi: pd.Series) -> str:
+    fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(10, 8))
+
+    # Graphique du prix et des moyennes mobiles
+    ax1.plot(data.index, data['Close'], label="Close", color="blue")
+    ax1.plot(sma50.index, sma50, label="SMA50", color="orange")
+    ax1.plot(sma200.index, sma200, label="SMA200", color="green")
+    ax1.set_title("Prix et Moyennes Mobiles")
+    ax1.set_ylabel("Prix ($)")
+    ax1.legend()
+    
+    # Graphique du RSI
+    ax2.plot(rsi.index, rsi, label="RSI (14)", color="purple")
+    ax2.axhline(70, color='red', linestyle='--')
+    ax2.axhline(30, color='green', linestyle='--')
+    ax2.set_title("RSI (14)")
+    ax2.set_ylabel("RSI")
+    ax2.legend()
+    
+    plt.xlabel("Date")
+    plt.tight_layout()
+    
+    buf = io.BytesIO()
+    plt.savefig(buf, format="png")
+    plt.close(fig)
+    buf.seek(0)
+    image_base64 = base64.b64encode(buf.read()).decode("utf-8")
+    return image_base64
+
+# Route principale du POST pour analyser un ticker
+@app.post("/analyze_stock")
+async def analyze_stock_endpoint(request: StockRequest):
+    ticker = request.ticker.upper()
+    data = get_stock_data(ticker)
+    if data is None:
+        raise HTTPException(status_code=404, detail="Aucune donnée trouvée pour ce ticker")
+    
+    # Analyse technique
+    analysis, sma50, sma200, rsi = analyze_stock(data)
+    
+    # Génération du graphique
+    plot_image = generate_plot(data, sma50, sma200, rsi)
+    
+    # Enregistrement de l'analyse dans un fichier de log (stock_analysis_log.txt)
+    log_line = f"{datetime.datetime.now()} - {ticker}: {analysis}\n"
+    with open("stock_analysis_log.txt", "a") as f:
+        f.write(log_line)
+    
+    return {
+        "ticker": ticker,
+        "analysis": analysis,
+        "plot_image": plot_image  # Image encodée en base64 (format PNG)
+    }
+
+@app.get("/")
+async def read_root():
+    return {"message": "Bienvenue sur l'API StockWatch ! Utilisez la route /analyze_stock en méthode POST pour analyser un ticker."}
+
+# Lancement de l'application via uvicorn
+if __name__ == "__main__":
+    # Pour lancer en local : python stockwatch.py
+    uvicorn.run(app, host="0.0.0.0", port=8000)
