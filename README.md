@@ -1,105 +1,73 @@
-StockWatch
-StockWatch est une application légère et open source qui vous permet d'analyser en temps réel des actions grâce à des indicateurs techniques clés. Construit avec FastAPI et yfinance, ce mini-dashboard calcule et affiche le prix actuel, le RSI (14), le SMA(50) et le SMA(200) d’un stock, en y ajoutant un signal simple (Overbought / Undervalued). Chaque analyse est également loguée dans un fichier pour un suivi historique.
+# 📊 StockWatch
 
-Fonctionnalités
-Récupération de données : Récupère l’historique des cours d’une action (sur 6 mois) via l’API yfinance.
+**StockWatch** est une application de suivi boursier simple et visuelle, conçue pour aider à suivre en temps réel l’évolution de différentes actions et à analyser les tendances des marchés financiers.
 
-Calcul d'indicateurs techniques :
+---
 
-Prix actuel.
+## 🧠 À propos
 
-RSI (14 périodes).
+StockWatch permet de :
 
-Moyennes mobiles SMA(50) et SMA(200).
+- Suivre l’évolution de plusieurs actions
+- Visualiser les tendances grâce à des graphiques dynamiques
+- Obtenir les variations de prix en temps réel (ou via historique si en local)
+- Préparer les bases pour un outil d’analyse de portefeuille ou d’alerte automatique
 
-Signal simple : Détermine si une action est surachetée (RSI > 70) ou sous-évaluée (RSI < 30).
+Un outil pensé pour les investisseurs curieux, les développeurs passionnés de finance, ou les débutants qui veulent explorer la bourse autrement.
 
-Visualisation : Génère un graphique combiné du cours et des indicateurs techniques à l’aide de matplotlib, encodé en base64.
+---
 
-Journalisation : Enregistre l'analyse dans un fichier texte (stock_analysis_log.txt) pour un suivi ultérieur.
+## ✨ Fonctionnalités
 
-API REST : Expose des endpoints via FastAPI pour interagir facilement avec l’application.
+- 📈 Affichage en temps réel des données boursières (si connecté à une API)
+- 📉 Courbes d’évolution des prix
+- 🔎 Sélection personnalisée des actions à suivre
+- 🧠 Architecture simple et modulaire pour ajouter des outils d’analyse plus poussés
+- 🖥️ Interface utilisateur via Tkinter
 
-Prérequis
-Python 3.7+
+---
 
-Les packages suivants (installables via pip) :
+## 🛠️ Technologies
 
-fastapi
+- Python
+- Tkinter (GUI)
+- Matplotlib (graphique des prix)
+- Pandas
+- yfinance ou autre API (à intégrer ou simuler)
 
-uvicorn
+---
 
-yfinance
+## ⚙️ Installation
 
-pandas
-
-numpy
-
-matplotlib
-
-pydantic
-
-Installation
-Cloner le dépôt et se positionner dans le répertoire :
-
-bash
-Copier
-git clone <URL_DU_DEPOT>
+```bash
+git clone https://github.com/KilianDiama/StockWatch.git
 cd StockWatch
-Créer un environnement virtuel (optionnel mais recommandé) :
-
-bash
-Copier
-python -m venv venv
-source venv/bin/activate   # Sur Windows : venv\Scripts\activate
-Installer les dépendances :
-
-bash
-Copier
-pip install fastapi uvicorn yfinance pandas numpy matplotlib pydantic
-Vous pouvez aussi utiliser un fichier requirements.txt (si disponible) :
-
-bash
-Copier
 pip install -r requirements.txt
-Utilisation
-Lancer l'application :
-
+▶️ Utilisation
 bash
 Copier
-uvicorn stockwatch:app --reload --host 0.0.0.0 --port 8000
-Accéder à la documentation interactive :
+Modifier
+python stockwatch.py
+Choisis tes actions à surveiller
 
-Ouvrez votre navigateur à l’adresse http://localhost:8000/docs pour explorer les endpoints de l’API.
+Lance la visualisation des données
 
-Analyser un ticker :
+Obtiens un affichage graphique en live (ou basé sur l’historique)
 
-Envoyez une requête POST à l’endpoint /analyze_stock avec un JSON comme celui-ci :
+📸 Screenshots (à ajouter)
+Tu peux ici mettre une capture d’écran de la fenêtre principale, ou un exemple de graphe de prix.
 
-json
-Copier
-{
-    "ticker": "AAPL"
-}
-La réponse inclura :
+🔮 Roadmap
+🌐 Connexion en live à une API type Yahoo Finance ou Alpha Vantage
 
-Les indicateurs calculés (prix actuel, RSI, SMA50, SMA200, signal).
+📬 Notifications d’alerte sur seuils personnalisés
 
-Une image encodée en base64 du graphique généré.
+📁 Export CSV des historiques suivis
 
-Logs :
+📱 Déploiement sur mobile (React Native ou Flutter)
 
-Chaque analyse est enregistrée dans le fichier stock_analysis_log.txt avec la date, l’heure et les détails de l’analyse.
+📜 Licence
 
-Structure du Projet
-stockwatch.py : Fichier principal contenant l’implémentation de l’API FastAPI et du pipeline d’analyse.
 
-stock_analysis_log.txt : Fichier log où sont stockées toutes les analyses.
-
-requirements.txt : (Optionnel) Liste des dépendances pour le projet.
-
-Contribuer
-Les contributions sont les bienvenues ! Si vous souhaitez améliorer le projet ou ajouter de nouvelles fonctionnalités, merci de soumettre vos issues et pull requests via GitHub.
-
-Licence
-Ce projet est protégé par la Licence Exclusive "ProtègeMonTaf" v1.0. Pour plus de détails, consultez le fichier LICENSE.
+✍️ Par Diamajax
+“Surveiller les marchés, c’est bien. Comprendre les tendances, c’est mieux. Automatiser le tout ? C’est StockWatch.” — Diamajax
