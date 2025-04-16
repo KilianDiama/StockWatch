@@ -1,25 +1,22 @@
-Licence Exclusive "ProtègeMonTaf" v1.0
-======================================
+Diamajax License v1.0  
+© 2025 Matthieu Ouvrard (aka Diamajax)
 
-Copyright (c) [2025] [ouvrard matthieu].  
-Tous droits réservés.
+Ce logiciel, ses composants et ses dérivés sont protégés par la présente licence personnalisée.  
+Toute utilisation du code implique l'acceptation des conditions suivantes :
 
-1. Attribution  
-   Vous êtes autorisé à consulter, utiliser et modifier ce travail pour un usage strictement personnel et non commercial, à condition de conserver intactes les mentions de droit d'auteur et les avis de licence d'origine.
+1. 🔓 **Usage personnel et éducatif** — libre, sans restriction.  
+2. 🤝 **Usage open-source** — autorisé sous réserve de mention claire de l’auteur (“matthieu aka Diamajax”) dans le code, la documentation ou l’interface.
+3. 💼 **Usage commercial** — INTERDIT sans accord écrit explicite de l’auteur.  
+   → Pour toute demande commerciale, contactez : [diamajax@gmail.com].
 
-2. Utilisation Commerciale  
-   Toute utilisation commerciale, revente, distribution, ou exploitation du travail, en tout ou partie, est strictement interdite sans l’accord préalable écrit de l'auteur ([Votre Nom]).
+4. ✍️ **Modifications autorisées** — mais toute version dérivée doit **garder une mention visible** de l’auteur original.  
+5. 🛡️ **Aucune garantie** — ce logiciel est fourni “tel quel”, sans garantie d’usage, de sécurité ou de performance.
+6. 🧠 **Respect & reconnaissance** — si ce projet t’aide, mentionne l’auteur, partage le projet, et n'oublie pas : le savoir, ça se respecte.
 
-3. Redistribution  
-   La redistribution ou la mise à disposition en ligne de ce travail ou de ses dérivés est interdite, sauf autorisation explicite obtenue par écrit de l'auteur.
+---
 
-4. Garantie  
-   Ce travail est fourni "tel quel", sans garantie d’aucune sorte, expresse ou implicite. L'utilisateur assume l'entière responsabilité de son utilisation.
+✅ Tu veux l’utiliser ? Tu peux.  
+💰 Tu veux en faire du business ? Tu me parles d’abord.  
+🚫 Tu veux voler le taf sans crédit ? T’as rien compris à l’open source.
 
-5. Responsabilité  
-   En aucun cas, l'auteur ([Votre Nom]) ne pourra être tenu responsable de tout dommage direct, indirect, accessoire ou consécutif résultant de l'utilisation, de la modification ou de l'incapacité d'utiliser ce travail.
-
-6. Accord Intégral  
-   La présente licence constitue l'intégralité de l'accord entre l'utilisateur et l'auteur concernant l'utilisation de ce travail. Aucune modification ne pourra être opposée à l'auteur sans un accord écrit préalable.
-
-En utilisant ce travail, vous acceptez sans réserve les conditions énoncées dans cette Licence Exclusive "ProtègeMonTaf" v1.0.
+#DiamajaxLicense #RespectDuCode #OpenButFair
